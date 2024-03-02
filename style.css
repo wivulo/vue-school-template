@@ -78,9 +78,14 @@ button#create-account-2{
 }
 
 button#create-account-2{
-    background-color: var(--violet-soft);
+    background-color: var(--violet);
     font-weight: bold;
     font-size: 1.2em;
+    cursor: pointer;
+}
+
+button#create-account-2:disabled{
+    background-color: var(--violet-soft);
 }
 
 .border-none{
@@ -134,4 +139,15 @@ a{
 
 form label{
     font-size: .8em;
+}
+
+.user-icon{
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--violet);
 }

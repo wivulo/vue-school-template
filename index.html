@@ -13,8 +13,8 @@
 <body>
     <div id="app" class="background">
         <div class="w-100 h-100 d-flex flex-column">
-            <app-header></app-header>
-            <app-main></app-main>
+            <app-header :user="user"></app-header>
+            <app-main @on-create-account-tunnel="handleCreateAccount"></app-main>
         </div>
     </div>
 
@@ -63,16 +63,25 @@
                                   </svg>
                             </button>
                         </li>
-                        <li>
-                            <button class="btn text-white">
-                                Login
-                            </button>
-                        </li>
-                        <li>
-                            <button class="btn py-2 px-3" id="create-account">
-                                Create Account
-                            </button>
-                        </li>
+                        <template v-if="user.name">
+                            <li class="d-flex justify-content-center align-items-center">
+                                <div class="user-icon">
+                                    {{ user.name.charAt(0) }}
+                                </div>
+                            </li>
+                        </template>
+                        <template v-else>
+                            <li>
+                                <button class="btn text-white">
+                                    Login
+                                </button>
+                            </li>
+                            <li>
+                                <button class="btn py-2 px-3" id="create-account">
+                                    Create Account
+                                </button>
+                            </li>
+                        </template>
                     </ul>
             </div>
         </nav>
@@ -92,43 +101,78 @@
           </div>
     </script>
 
+    <script type="text/x-template" id="form-template">
+        <form @submit.prevent="submitForm" class="form gap-3 d-flex flex-column position-relative">
+            <div class="d-flex gap-2">
+                <div class="flex-fill">
+                    <label for="inputName" class="form-label text-secondary">Name</label>
+                    <input 
+                        type="text"
+                        name="name"
+                        v-model="name"
+                        class="form-control" 
+                        id="inputName"
+                        placeholder="Enter your name"
+                        required
+                    />
+                  </div>
+                  <div class="flex-fill">
+                    <label for="inputEmail" class="form-label text-secondary">Email</label>
+                    <input 
+                        type="email"
+                        name="email"
+                        v-model="email" 
+                        class="form-control" 
+                        id="inputEmail"
+                        placeholder="Enter your email"
+                        required
+                        />
+                  </div>
+            </div>
+
+            <div>
+              <label for="inputPassword" class="form-label text-secondary">Password</label>
+              <input 
+                type="password" 
+                name="password"
+                v-model="password"
+                class="form-control" 
+                id="inputPassword" 
+                placeholder="Enter your password"
+                required
+                />
+            </div>
+
+            <div class="alert alert-danger text-center position-absolute w-100 bottom-0 start-0 z-3" role="alert" v-show="errorMessage">
+                {{ errorMessage }}
+            </div>
+
+            <div>
+                <p class="text-center text-secondary termsAndPolicy">By creating an account you aggree our <span class="text-primary">terms</span> and <span class="text-primary">privacy policy</span></p>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <a href="" class="alreadyHaveAnAccount">I already have an account</a>
+                <button type="submit" class="btn py-2 px-3 text-white" id="create-account-2" :disabled="isButtonDisabled">
+                    <span v-show="!isCreateAccount">Create Account</span>
+
+                    <div :class="{'d-flex': isCreateAccount}" class="justify-content-center" v-show="isCreateAccount">
+                        <div class="spinner-border" role="status">
+                          <span class="visually-hidden">Loading...</span>
+                        </div>
+                      </div>
+                </button>
+            </div>
+          </form>
+    </script>
+
     <script type="text/x-template" id="main-template">
         <main class="d-flex align-items-center flex-fill flex-column gap-4">
             <h2 class="text-white my-5">Create Account</h2>
 
             <div class="w-43 h-60 p-4 bg-white rounded-10">
                 <h4 class="text-secondary">Create Account</h4>
-                <form class="form gap-3 d-flex flex-column">
-                    <div class="d-flex gap-2">
-                        <div class="flex-fill">
-                            <label for="inputName" class="form-label text-secondary">Name</label>
-                            <input type="text" class="form-control" id="inputName"
-                            placeholder="Enter your name">
-                          </div>
-                          <div class="flex-fill">
-                            <label for="inputEmail" class="form-label text-secondary">Email</label>
-                            <input type="email" class="form-control" id="inputEmail"
-                            placeholder="Enter your email">
-                          </div>
-                    </div>
-
-                    <div>
-                      <label for="inputPassword" class="form-label text-secondary">Password</label>
-                      <input type="password" class="form-control" id="inputPassword" 
-                      placeholder="Enter your password">
-                    </div>
-
-                    <div>
-                        <p class="text-center text-secondary termsAndPolicy">By creating an account you aggree our <span class="text-primary">terms</span> and <span class="text-primary">privacy policy</span></p>
-                    </div>
-
-                    <div class="d-flex justify-content-between">
-                        <a href="" class="alreadyHaveAnAccount">I already have an account</a>
-                        <button type="submit" class="btn py-2 px-3 text-white" id="create-account-2">
-                            Create Account
-                        </button>
-                    </div>
-                  </form>
+                <app-form @on-create-account="handleCreateAccount"></app-form>
             </div>
         </main>
     </script>

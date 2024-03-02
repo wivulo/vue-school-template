@@ -2,5 +2,9 @@
   "dependencies": {
     "bootstrap-icons": "^1.11.3",
     "vue": "^2.7.16"
+  },
+  "devDependencies": {
+    "vue-loader": "^17.4.2",
+    "vue-template-compiler": "^2.7.16"
   }
 }
